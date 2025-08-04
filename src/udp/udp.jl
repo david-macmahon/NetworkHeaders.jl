@@ -1,3 +1,9 @@
+module UDP
+
+export UDPHeader
+
+using ..NetworkHeaders
+
 struct UDPHeader <: AbstractNetworkHeader
     sport::UInt16
     dport::UInt16
@@ -30,3 +36,5 @@ function Base.show(io::IO, x::UDPHeader)
         ")"
     )
 end
+
+end # module UDP

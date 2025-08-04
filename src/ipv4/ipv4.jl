@@ -1,4 +1,12 @@
+module IPv4
+
+export IPv4Header, Constants
+
+using Sockets
+using ..NetworkHeaders
+
 include("enums.jl")
+using .Constants
 
 struct IPv4Header{N} <: AbstractNetworkHeader
     data::NTuple{N, UInt32}
@@ -110,8 +118,8 @@ function Base.getproperty(x::IPv4Header{N}, f::Symbol) where N
     f === :protocol && return UInt8((x[3]>>16) & 0xff)
     f === :checksum && return UInt16(x[3] & 0xffff)
     # Other fields
-    f === :sip && return IPv4(x[4])
-    f === :dip && return IPv4(x[5])
+    f === :sip && return Sockets.IPv4(x[4])
+    f === :dip && return Sockets.IPv4(x[5])
     # TODO options!
     # generic
     f === :bytes && return reinterpret(NTuple{4N, UInt8}, x)
@@ -139,3 +147,5 @@ function Base.show(io::IO, x::IPv4Header)
     end
     print(io, ")")
 end
+
+end # module IPv4

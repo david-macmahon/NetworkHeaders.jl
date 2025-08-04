@@ -1,4 +1,12 @@
+module ICMP
+
+export ICMPHeader, Constants
+
+using Sockets
+using ..NetworkHeaders
+
 include("enums.jl")
+using .Constants
 
 struct ICMPHeader <: AbstractNetworkHeader
     type::UInt8
@@ -236,3 +244,5 @@ function Base.show(io::IO, x::ICMPHeader)
     end
     print(io, ")")
 end
+
+end # module ICMP

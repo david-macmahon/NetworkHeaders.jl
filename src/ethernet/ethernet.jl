@@ -1,5 +1,13 @@
-include("enums.jl")
+module Ethernet
+
+export AbstractEthernetHeader, EthernetHeader, EthernetVlanHeader, Constants
+export mac2string, string2mac, @mac_str
+
+using ..NetworkHeaders
+
 include("helpers.jl")
+include("enums.jl")
+using .Constants
 
 abstract type AbstractEthernetHeader <: AbstractNetworkHeader end
 
@@ -105,3 +113,5 @@ function Base.show(io::IO, x::AbstractEthernetHeader)
     end
     print(io, ", ", repr(x.ethtype), ")")
 end
+
+end # module Ethernet

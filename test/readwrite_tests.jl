@@ -1,5 +1,3 @@
-using NetworkHeaders: IPPROTO_ICMP
-
 @testset "read/write" begin
 #---
     pkts_hex = (
@@ -63,4 +61,5 @@ using NetworkHeaders: IPPROTO_ICMP
         @test pkts[2] == [e2.bytes...; ip2.bytes...; icmp2.bytes...; pl2]
         @test pkts[3] == [e3.bytes...; ip3.bytes...; udp3.bytes...; pl3]
     end
+#---
 end

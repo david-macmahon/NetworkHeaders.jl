@@ -1,4 +1,9 @@
-using NetworkHeaders, Sockets
+using NetworkHeaders
+using NetworkHeaders.EthernetConstants
+using NetworkHeaders.IPv4Constants
+using NetworkHeaders.ICMPConstants
+
+using Sockets
 using Test
 
 test_data = (

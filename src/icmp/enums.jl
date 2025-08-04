@@ -1,7 +1,24 @@
+module Constants
+
+export ICMPType, ICMP_ECHOREPLY, ICMP_DEST_UNREACH, ICMP_SOURCE_QUENCH,
+    ICMP_REDIRECT, ICMP_ECHO, ICMP_TIME_EXCEEDED, ICMP_PARAMETERPROB,
+    ICMP_TIMESTAMP, ICMP_TIMESTAMPREPLY, ICMP_INFO_REQUEST, ICMP_INFO_REPLY,
+    ICMP_ADDRESS, ICMP_ADDRESSREPLY
+export ICMPDestUnreachCode, ICMP_NET_UNREACH, ICMP_HOST_UNREACH,
+    ICMP_PROT_UNREACH, ICMP_PORT_UNREACH, ICMP_FRAG_NEEDED, ICMP_SR_FAILED,
+    ICMP_NET_UNKNOWN, ICMP_HOST_UNKNOWN, ICMP_HOST_ISOLATED, ICMP_NET_ANO,
+    ICMP_HOST_ANO, ICMP_NET_UNR_TOS, ICMP_HOST_UNR_TOS, ICMP_PKT_FILTERED,
+    ICMP_PREC_VIOLATION, ICMP_PREC_CUTOFF
+export ICMPRedirectCode, ICMP_REDIR_NET, ICMP_REDIR_HOST, ICMP_REDIR_NETTOS,
+    ICMP_REDIR_HOSTTOS
+export ICMPParameterprobCode, ICMP_SEE_POINTER, ICMP_MISSING_OPTION,
+    ICMP_BADE_LENGTH
+export ICMPTimeExceededCode, ICMP_EXC_TTL, ICMP_EXC_FRAGTIME
+
 """
 ICMP types
 """
-@enum ICMPType::UInt8 begin            # Desc                     [data fields]
+@enum ICMPType::UInt8 begin           # Desc                     [data fields]
     ICMP_ECHOREPLY          = 0       # Echo Reply               [id, sequence]
     ICMP_DEST_UNREACH       = 3       # Destination Unreachable  [mtu]
     ICMP_SOURCE_QUENCH      = 4       # Source Quench            [unused]
@@ -65,3 +82,5 @@ ICMP codes for ICMP_TIME_EXCEEDED type
     ICMP_EXC_TTL            = 0       # TTL count exceeded
     ICMP_EXC_FRAGTIME       = 1       # Fragment Reass time exceeded
 end
+
+end # module Constants
