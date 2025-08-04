@@ -22,6 +22,7 @@ export EtherType, ETH_P_LOOP, ETH_P_PUP, ETH_P_PUPAT, ETH_P_TSN, ETH_P_IP,
     ETH_P_PUP         = 0x0200
     ETH_P_PUPAT       = 0x0201
     ETH_P_TSN         = 0x22F0
+    ETH_P_ERSPAN2     = 0x22EB
     ETH_P_IP          = 0x0800
     ETH_P_X25         = 0x0805
     ETH_P_ARP         = 0x0806
@@ -42,6 +43,7 @@ export EtherType, ETH_P_LOOP, ETH_P_PUP, ETH_P_PUPAT, ETH_P_TSN, ETH_P_IP,
     ETH_P_ATALK       = 0x809B
     ETH_P_AARP        = 0x80F3
     ETH_P_8021Q       = 0x8100
+    ETH_P_ERSPAN      = 0x88BE
     ETH_P_IPX         = 0x8137
     ETH_P_IPV6        = 0x86DD
     ETH_P_PAUSE       = 0x8808
@@ -55,23 +57,38 @@ export EtherType, ETH_P_LOOP, ETH_P_PUP, ETH_P_PUPAT, ETH_P_TSN, ETH_P_IP,
     ETH_P_LINK_CTL    = 0x886c
     ETH_P_ATMFATE     = 0x8884
     ETH_P_PAE         = 0x888E
+    ETH_P_PROFINET    = 0x8892
+    ETH_P_REALTEK     = 0x8899
     ETH_P_AOE         = 0x88A2
+    ETH_P_ETHERCAT    = 0x88A4
     ETH_P_8021AD      = 0x88A8
     ETH_P_802_EX1     = 0x88B5
+    ETH_P_PREAUTH     = 0x88C7
     ETH_P_TIPC        = 0x88CA
+    ETH_P_LLDP        = 0x88CC
+    ETH_P_MRP         = 0x88E3
+    ETH_P_MACSEC      = 0x88E5
     ETH_P_8021AH      = 0x88E7
     ETH_P_MVRP        = 0x88F5
     ETH_P_1588        = 0x88F7
+    ETH_P_NCSI        = 0x88F8
     ETH_P_PRP         = 0x88FB
+    ETH_P_CFM         = 0x8902
     ETH_P_FCOE        = 0x8906
+    ETH_P_IBOE        = 0x8915
     ETH_P_TDLS        = 0x890D
     ETH_P_FIP         = 0x8914
     ETH_P_80221       = 0x8917
+    ETH_P_HSR         = 0x892F
+    ETH_P_NSH         = 0x894F
     ETH_P_LOOPBACK    = 0x9000
     ETH_P_QINQ1       = 0x9100
     ETH_P_QINQ2       = 0x9200
     ETH_P_QINQ3       = 0x9300
     ETH_P_EDSA        = 0xDADA
+    ETH_P_DSA_8021Q   = 0xDADB
+    ETH_P_DSA_A5PSW   = 0xE001
+    ETH_P_IFE         = 0xED3E
     ETH_P_AF_IUCV     = 0xFBFB
     ETH_P_802_3_MIN   = 0x0600
     ETH_P_802_3       = 0x0001
@@ -85,6 +102,7 @@ export EtherType, ETH_P_LOOP, ETH_P_PUP, ETH_P_PUPAT, ETH_P_TSN, ETH_P_IP,
     ETH_P_LOCALTALK   = 0x0009
     ETH_P_CAN         = 0x000C
     ETH_P_CANFD       = 0x000D
+    ETH_P_CANXL       = 0x000E
     ETH_P_PPPTALK     = 0x0010
     ETH_P_TR_802_2    = 0x0011
     ETH_P_MOBITEX     = 0x0015
@@ -99,6 +117,8 @@ export EtherType, ETH_P_LOOP, ETH_P_PUP, ETH_P_PUPAT, ETH_P_TSN, ETH_P_IP,
     ETH_P_IEEE802154  = 0x00F6
     ETH_P_CAIF        = 0x00F7
     ETH_P_XDSA        = 0x00F8
+    ETH_P_MAP         = 0x00F9
+    ETH_P_MCTP        = 0x00FA
 end
 
 end # module Constants
