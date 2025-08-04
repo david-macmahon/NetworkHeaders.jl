@@ -33,7 +33,7 @@
 
     @testset "EthernetHeader" begin
         eth = EthernetHeader(mac"ff:ff:ff:ff:ff:ff", mac"11:22:33:44:55:66")
-        ethstr = "EthernetHeader(dmac=ff:ff:ff:ff:ff:ff, smac=11:22:33:44:55:66, 0x0800)"
+        ethstr = "EthernetHeader(dmac=ff:ff:ff:ff:ff:ff, smac=11:22:33:44:55:66, ETH_P_IP)"
         @test propertynames(eth) == (:dmac, :smac, :ethtype, :bytes)
         @test propertynames(eth, true) == (:dmac, :smac, :ethtype, :bytes)
         @test eth.dmac === mac"ff:ff:ff:ff:ff:ff"
@@ -57,11 +57,16 @@
             0x12, 0x34
         )
         @test repr(eth) == ethstr
+
+        # Test ethtype as EtherType value
+        eth = EthernetHeader(ethtype=ETH_P_IP)
+        ethstr = "EthernetHeader(dmac=ff:ff:ff:ff:ff:ff, smac=ff:ff:ff:ff:ff:ff, ETH_P_IP)"
+        @test repr(eth) == ethstr
     end
 
     @testset "EthernetVlanHeader" begin
         eth = EthernetVlanHeader(mac"ff:ff:ff:ff:ff:ff", mac"11:22:33:44:55:66", 0x1234, 0x5678; tpid=0xabcd)
-        ethstr = "EthernetVlanHeader(dmac=ff:ff:ff:ff:ff:ff, smac=11:22:33:44:55:66, 0x1234)"
+        ethstr = "EthernetVlanHeader(dmac=ff:ff:ff:ff:ff:ff, smac=11:22:33:44:55:66, 0xabcd, 0x1234, 0x5678)"
         @test propertynames(eth) == (:dmac, :smac, :tpid, :vlan, :ethtype, :bytes)
         @test propertynames(eth, true) == (:dmac, :smac, :tpid, :vlan, :ethtype, :bytes)
         @test eth.dmac === mac"ff:ff:ff:ff:ff:ff"
@@ -75,8 +80,10 @@
             0xab, 0xcd, 0x12, 0x34,
             0x56, 0x78
         )
+        @test repr(eth) == ethstr
 
         eth = EthernetVlanHeader(mac"11:22:33:44:55:66", mac"ff:ff:ff:ff:ff:ff", 0x1234)
+        ethstr = "EthernetVlanHeader(dmac=11:22:33:44:55:66, smac=ff:ff:ff:ff:ff:ff, 0x1234, ETH_P_IP)"
         @test eth.dmac === mac"11:22:33:44:55:66"
         @test eth.smac === mac"ff:ff:ff:ff:ff:ff"
         @test eth.tpid === 0x8100
@@ -88,5 +95,6 @@
             0x81, 0x00, 0x12, 0x34,
             0x08, 0x00
         )
+        @test repr(eth) == ethstr
     end
 end # testset "ethernet"

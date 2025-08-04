@@ -17,7 +17,7 @@ struct EthernetHeader <: AbstractEthernetHeader
     ethtype::UInt16
 
     function EthernetHeader(dmac, smac, ethtype=0x0800)
-        new(dmac, smac, hton(ethtype % UInt16))
+        new(dmac, smac, hton(Integer(ethtype) % UInt16))
     end
 end
 
@@ -54,7 +54,7 @@ struct EthernetVlanHeader <: AbstractEthernetHeader
             smac,
             hton(tpid % UInt16),
             hton(vlan % UInt16),
-            hton(ethtype % UInt16)
+            hton(Integer(ethtype) % UInt16)
         )
     end
 end
@@ -84,7 +84,7 @@ function Base.getproperty(x::EthernetVlanHeader, f::Symbol)
 end
 
 # Special read for AbstractEthernetHeader that peeks at the ethtype field and
-# reads EthernetVlanHeader if it is ETH_P_8021Q.
+# reads EthernetVlanHeader if it is ETH_P_8021Q, otherwise reads EthernetHeader.
 function Base.read(io::IO, ::Type{AbstractEthernetHeader})
     T =try
         ethtype = (ntoh(peek(io, UInt128)) >> 16) % UInt16
@@ -107,11 +107,23 @@ function Base.show(io::IO, x::AbstractEthernetHeader)
     compact || print(io, "smac=")
     print(io, mac2string(x.smac))
     if x isa EthernetVlanHeader
-        print(io, ", ")
-        compact || x.tpid == 0x8100 || print(io, repr(x.tpid), ", ")
-        print(io, repr(x.vlan))
+        if !compact && x.tpid != Integer(ETH_P_8021Q)
+            print(io, ", ")
+            if x.tpid in Integer.(instances(EtherType))
+                print(io, EtherType(x.tpid))
+            else
+                print(io, repr(x.tpid))
+            end
+        end
+        print(io, ", ", repr(x.vlan))
     end
-    print(io, ", ", repr(x.ethtype), ")")
+    print(io, ", ")
+    if x.ethtype in Integer.(instances(EtherType))
+        print(io, EtherType(x.ethtype))
+    else
+        print(io, repr(x.ethtype))
+    end
+    print(io, ")")
 end
 
 end # module Ethernet
