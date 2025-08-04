@@ -219,7 +219,69 @@ used to calculate the [Internet checksum] of an `AbstractVector` or `Tuple` of
 [IPv4 headers]: https://en.wikipedia.org/wiki/IPv4#Header
 [Internet checksum]: https://en.wikipedia.org/wiki/Internet_checksum
 
-### [User Datagram Protocol (UDP)](https://en.wikipedia.org/wiki/User_Datagram_Protocol)
+### [Internet Control Message Protocol][ICMP]
+
+ICMP headers contain 8 bytes.  The first four contain the `type`, `code`, and
+`checksum` fields.  The contents of the `code` field and the latter four bytes
+of the header are `type` dependent.  The `ICMPHeader` class exposes `type`
+dependent properties for any given instance.  The superset of properties exposed
+is listed in the table below, but for any given `ICMPHeader` instance only the
+ones relevant to that instance's `type` will be exposed:
+
+| Property   | Description                 | Type               |
+|------------|-----------------------------|--------------------|
+| `type`     | ICMP message type           | `UInt8`            |
+| `code`     | ICMP message code           | `UInt8`            |
+| `checksum` | ICMP message checksum       | `UInt16`           |
+| `id`       | ICMP message identifier     | `UInt16`           |
+| `sequence` | ICMP message sequence       | `UInt16`           |
+| `length`   | Length of original datagram | `UInt8`            |
+| `mtu`      | Maximum transmission Unit   | `UInt16`           |
+| `gateway`  | Alternate gateway           | `IPv4`             |
+| `pointer`  | Index of first bad value    | `UInt8`            |
+| `data`     | Last 4 bytes of header      | `UInt32`           |
+| `bytes`    | All bytes of the header     | `NTuple{8, UInt8}` |
+
+`ICMPHeader` structures can be constructed using this constructor:
+
+```julia
+ICMPHeader(type=ICMP_ECHO, checksum=nothing; kwargs...)
+```
+
+`type` is the ICMP type field of the header.  It may be an `ICMPType` value or
+any `Integer` value (only the low 8 bits are used).  If the `checksum` argument
+is `nothing` (the default), the checksum field will be computed as the Internet
+checksum of the ICMP header (and other data whose Internet checksum is given in
+`initcsum`); otherwise the given `checksum` value will be used.  The remaining
+contents of the `ICMPHeader` are determined from type-specific keyword arguments
+shown in the table below.  Unspecified keyword arguments default to 0, except
+for `initcsum` which defaults to `-1`.
+
+| `type`                | Keyword arguments           |
+|-----------------------|-----------------------------|
+| `ICMP_ECHO` (default) | initcsum, id, sequence      |
+| `ICMP_ECHOREPLY`      | initcsum, id, sequence      |
+| `ICMP_TIMESTAMP`      | initcsum, id, sequence      |
+| `ICMP_TIMESTAMPREPLY` | initcsum, id, sequence      |
+| `ICMP_INFO_REQUEST`   | initcsum, id, sequence      |
+| `ICMP_INFO_REPLY`     | initcsum, id, sequence      |
+| `ICMP_ADDRESS`        | initcsum, id, sequence      |
+| `ICMP_ADDRESSREPLY`   | initcsum, id, sequence      |
+| `ICMP_DEST_UNREACH`   | initcsum, code, length, mtu |
+| `ICMP_REDIRECT`       | initcsum, code, gateway     |
+| `ICMP_PARAMETERPROB`  | initcsum, code, pointer     |
+| `ICMP_TIME_EXCEEDED`  | initcsum, code              |
+| `ICMP_SOURCE_QUENCH`  | initcsum                    |
+| other Integer value   | initcsum, code, data        |
+
+When `type` is an `Integer` whose value is equivalent to one of the `ICMPType`
+enum values, it will use the corresponding keyword arguments; otherwise it will
+be treated as a non-standard ICMP type and the `code` and `data` keyword
+arguments will define the rest of the header contents.
+
+[ICMP]: https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol
+
+### [User Datagram Protocol (UDP)][UDP]
 
 [UDP headers][] consist of four 16-bit fields.  The `UDPHeader` structure
 exposes these as the four following properties:
@@ -246,6 +308,7 @@ The UDP checksum calculation uses not only the UDP header values but also other
 values outside the header.  This means that unlike the `IPv4Header` constructor
 the `UDPHeader` constructor cannot calculate the UDP checksum value.
 
+[UDP]: https://en.wikipedia.org/wiki/User_Datagram_Protocol
 [UDP headers]: https://en.wikipedia.org/wiki/User_Datagram_Protocol#UDP_datagram_structure
 
 ## Reading/writing headers
