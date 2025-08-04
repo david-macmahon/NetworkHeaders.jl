@@ -346,6 +346,45 @@ of the `NamedTuple` may include, in order, `ethernet`, `ipv4`, and `udp` or
 is encountered the reading will terminate. The `IO` is left positioned at the
 first location not consumed.
 
+## Protocol specific constants
+
+`NetworkHeaders.jl` provides some protocol specific constants for use with
+`EthernetHeader`, `IPv4Header`, and `ICMPHeader` (no constants for `UDPHeader`).
+To pull in all constants for a given header type, use one of the following:
+
+```julia
+using NetworkHeaders
+using NetworkHeaders.EthernetConstants
+using NetworkHeaders.IPv4Constants
+using NetworkHeaders.ICMPConstants
+```
+
+To pull in specific constants, use `import` instead of `using` and then specify
+the desired constant(s).  For example:
+
+```julia
+using NetworkHeaders
+import NetworkHeaders.EthernetConstants: ETH_P_IP
+import NetworkHeaders.IPv4Constants: IPPROTO_ICMP, IPPROTO_UDP
+import NetworkHeaders.ICMPConstants: ICMP_ECHO, ICMP_ECHOREPLY
+```
+
+These constants are defined as Julia `Enum` types.  The specific `Enum` type can
+be used to convert suitable `Integers` to an instance of the `Enum` type.  The
+`Enum` types automatically display as their name rather than their integer value
+which can be more informative to the reader.  Here is a table summarizing the
+`Enum` types available for each protocol:
+
+| Protocol | `Enum` type             | Description                                 |
+|:--------:|-------------------------|---------------------------------------------|
+| Ethernet | `EtherType`             | Values for `EthernetHeader` `ethtype` field |
+| IPv4     | `IPProtocol`            | Values for `IPv4Header` `protocol` field    |
+| ICMP     | `ICMPType`              | Values for `ICMPHeader` `type` field        |
+| ICMP     | `ICMPDestUnreachCode`   | ICMP codes for `ICMP_DEST_UNREACH` type     |
+| ICMP     | `ICMPRedirectCode`      | ICMP codes for `ICMP_REDIRECT` type         |
+| ICMP     | `ICMPParameterprobCode` | ICMP codes for `ICMP_PARAMETERPROB` type    |
+| ICMP     | `ICMPTimeExceededCode`  | ICMP codes for `ICMP_TIME_EXCEEDED` type    |
+
 ## Hexdump utility
 
 `NetworkHeaders.jl` has a simple and inflexible hexdump function that can be
