@@ -1,4 +1,4 @@
-include("ipv4_enums.jl")
+include("enums.jl")
 
 struct IPv4Header{N} <: AbstractNetworkHeader
     data::NTuple{N, UInt32}

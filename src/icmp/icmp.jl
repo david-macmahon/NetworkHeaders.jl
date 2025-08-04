@@ -1,4 +1,4 @@
-include("icmp_enums.jl")
+include("enums.jl")
 
 struct ICMPHeader <: AbstractNetworkHeader
     type::UInt8

@@ -37,10 +37,10 @@ include("checksum.jl")
 include("hexdump.jl")
 
 # Header specific definitions
-include("ethernet.jl")
-include("ipv4.jl")
-include("icmp.jl")
-include("udp.jl")
+include("ethernet/ethernet.jl")
+include("ipv4/ipv4.jl")
+include("icmp/icmp.jl")
+include("udp/udp.jl")
 
 function Base.write(io::IO, h::AbstractNetworkHeader)
     write(io, h.bytes...)

@@ -1,5 +1,5 @@
-include("ethernet_enums.jl")
-include("ethernet_helpers.jl")
+include("enums.jl")
+include("helpers.jl")
 
 abstract type AbstractEthernetHeader <: AbstractNetworkHeader end
 
