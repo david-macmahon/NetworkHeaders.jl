@@ -36,7 +36,7 @@
         "ICMPHeader(ICMP_ADDRESS, 0x8653, id=0x1234, sequence=0x5678)",
         "ICMPHeader(ICMP_ADDRESSREPLY, 0x8553, id=0x1234, sequence=0x5678)",
         "ICMPHeader(ICMP_DEST_UNREACH, 0xa652, code=ICMP_HOST_UNREACH, length=0x56, mtu=0x5678)",
-        "ICMPHeader(ICMP_REDIRECT, 0xe4e6, code=ICMP_REDIR_HOST, gateway=ip\"10.11.12.13\")",
+        "ICMPHeader(ICMP_REDIRECT, 0xe4e6, code=ICMP_REDIR_HOST, gateway=10.11.12.13)",
         "ICMPHeader(ICMP_PARAMETERPROB, 0xe1fe, code=ICMP_MISSING_OPTION, pointer=0x12)",
         "ICMPHeader(ICMP_TIME_EXCEEDED, 0xf4fe, code=ICMP_EXC_FRAGTIME)",
         "ICMPHeader(ICMP_SOURCE_QUENCH, 0xfbff)",
@@ -47,5 +47,13 @@
         for (hdr, exp) in zip(hdrs, repr_expected)
             @test repr(hdr) == exp
         end
+    end
+
+    @testset "icmp inner ctor" begin
+        # Test that inner constructor works with ICMPType etc constants.
+        icmp = ICMPHeader(ICMP_TIME_EXCEEDED, ICMP_EXC_TTL, 0x0000, Int32(0))
+        icmpstr = "ICMPHeader(ICMP_TIME_EXCEEDED, 0x0000, code=ICMP_EXC_TTL)"
+
+        @test repr(icmp) == icmpstr
     end
 end # testset "ICMP"

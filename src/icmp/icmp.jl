@@ -16,8 +16,8 @@ struct ICMPHeader <: AbstractNetworkHeader
 
     function ICMPHeader(type, code, checksum, data)
         new(
-            type % UInt8, code % UInt8, hton(checksum % UInt16),
-            hton(data % UInt32)
+            Integer(type) % UInt8, Integer(code) % UInt8,
+            hton(checksum % UInt16), hton(data % UInt32)
         )
     end
 end
@@ -103,7 +103,7 @@ function ICMPHeader(type::ICMPType=ICMP_ECHO, checksum=nothing;
         csum16 = checksum % UInt16
     end
 
-    ICMPHeader(Integer(type), code8, csum16, data32)
+    ICMPHeader(type, code8, csum16, data32)
 end
 
 function ICMPHeader(type::Integer, checksum=nothing; data=0, code=0, initcsum=-1, kwargs...)
@@ -235,7 +235,7 @@ function Base.show(io::IO, x::ICMPHeader)
         print(io, repr(x.mtu))
     elseif x.type === Integer(ICMP_REDIRECT)
         print(io, ", gateway=")
-        print(io, repr(x.gateway))
+        print(io, string(x.gateway))
     elseif x.type === Integer(ICMP_PARAMETERPROB)
         print(io, ", pointer=")
         print(io, repr(x.pointer))
