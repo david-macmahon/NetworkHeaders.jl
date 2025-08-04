@@ -21,13 +21,13 @@ end
 
 Construct an `ICMPHeader` of the given the given `type`.
 
-`type` is the ICMP type field of the header.  It may be an `ICMPtype` value or
+`type` is the ICMP type field of the header.  It may be an `ICMPType` value or
 any `Integer` value (only the low 8 bits are used).  If the `checksum` argument
 is `nothing` (the default), the checksum field will be computed as the Internet
 checksum of the ICMP header (and other data whose Internet checksum is given in
 `initcsum`); otherwise the given `checksum` value will be used.  The remaining
 contents of the `ICMPHeader` are determined from type-specific keyword arguments
-shown in the table below.  Unspecified keyword arguemnts default to 0, except
+shown in the table below.  Unspecified keyword arguments default to 0, except
 for `initcsum` which defaults to `-1`.
 
 | `type`                | Keyword arguments           |
@@ -48,7 +48,7 @@ for `initcsum` which defaults to `-1`.
 | other Integer value   | initcsum, code, data        |
 
 When `type` is an `Integer` whose value is equivalent to one of the `ICMPType`
-enum values, it will use the corresponding keyword arguements; otherwise it will
+enum values, it will use the corresponding keyword arguments; otherwise it will
 be treated as a non-standard ICMP type and the `code` and `data` keyword
 arguments will define the rest of the header contents.
 """

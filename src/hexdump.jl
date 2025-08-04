@@ -4,7 +4,7 @@
     hexdump([io,] bytes)
     hexdump([io,] hdr::AbstractNetworkHeader)
 
-Dump `bytes` or `hdr.byets` to `io` (or `stdout`) in hexdump format.
+Dump `bytes` or `hdr.bytes` to `io` (or `stdout`) in hexdump format.
 """
 function hexdump(io, bytes::Union{AbstractVector{UInt8}, NTuple{N,UInt8}}) where N
     foreach(enumerate(Iterators.partition(bytes, 16))) do (rownum, row)
