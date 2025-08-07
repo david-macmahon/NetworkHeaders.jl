@@ -25,6 +25,17 @@ function IPv4Header(data::NTuple{N, T}) where {N, T<:Integer}
     IPv4Header(data32)
 end
 
+# "Properties" constructor
+function IPv4Header(
+    _version, _ihl, dscp, ecn, length, id, flags, offset,
+    ttl, protocol, checksum, sip, dip, options, _bytes
+)
+    IPv4Header(;
+        dscp, ecn, length, id, flags, offset,
+        ttl, protocol, checksum, sip, dip, options
+    )
+end
+
 function IPv4Header(;
     #version=4,
     #ihl
