@@ -11,11 +11,13 @@ using .Constants
 struct IPv4Header{N} <: AbstractNetworkHeader
     data::NTuple{N, UInt32}
 
-    function IPv4Header(data::NTuple{N, UInt32}) where N
+    function IPv4Header{N}(data::NTuple{N, UInt32}) where N
         N <  5 && error("IPv4Header cannot have fewer than 20 bytes")
         N > 15 && error("IPv4Header cannot have more than 60 bytes")
         new{N}(data)
     end
+
+    IPv4Header(data::NTuple{N, UInt32}) where N = IPv4Header{N}(data)
 end
 
 function IPv4Header(data::NTuple{N, T}) where {N, T<:Integer}
