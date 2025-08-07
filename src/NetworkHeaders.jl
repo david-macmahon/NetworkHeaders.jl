@@ -17,7 +17,12 @@ export mac2string, string2mac, @mac_str
 
 export read_headers
 
+# All AbstractNetworkHeader types must have a "properties" constructor and a
+# no-arg constructor.
 abstract type AbstractNetworkHeader end
+
+# zero() method for AbstractNetworkHeader types just calls no-arg constructor
+zero(::Type{T}) where {T<:AbstractNetworkHeader} = T()
 
 # Misc utilities
 include("checksum.jl")
