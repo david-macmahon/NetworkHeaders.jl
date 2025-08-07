@@ -4,6 +4,7 @@ using NetworkHeaders.IPv4Constants
 using NetworkHeaders.ICMPConstants
 
 using Sockets
+using StructArrays
 using Test
 
 test_data = (
@@ -64,5 +65,6 @@ hexdump_expected = (
     include("icmp_tests.jl")
     include("udp_tests.jl")
     include("readwrite_tests.jl")
+    include("structarrays_tests.jl")
 
 end

@@ -394,6 +394,36 @@ functionality, consider using `hexdump` from the [`BasedDumps.jl`][] package.
 
 [`BasedDumps.jl`]: https://github.com/wherrera10/BasedDumps.jl
 
+## [`StructArrays`] extension
+
+`NetworkHeaders.jl` provides an extension that allows a `StructArray` to be
+created from an `Array{T<:AbstractNetworkHeader}` when both the `NetworkHeaders`
+and `StructArrays` packages are loaded.  This creates a copy of the input data.
+The `StructArray` will be "detached" from the input `Array` (i.e. changes to the
+input `Array` will not be reflected in the `StructArray` and vice versa).
+
+[`StructArrays`]: https://juliaarrays.github.io/StructArrays.jl/stable/
+
+### Example
+
+```julia
+julia> udps = UDPHeader.(rand(UInt16, 4), rand(UInt16, 4), rand(UInt16, 4), rand(UInt16, 4));
+
+julia> hsa = StructArray(udps)
+4-element StructArray(::Vector{UInt16}, ::Vector{UInt16}, ::Vector{UInt16}, ::Vector{UInt16}) with eltype UDPHeader:
+ UDPHeader(sport=16477, dport=50206, length=34380)
+ UDPHeader(sport=23905, dport=43664, length=14348)
+ UDPHeader(sport=64686, dport=60442, length=52405)
+ UDPHeader(sport=41834, dport=43640, length=25421)
+
+julia> hsa.sport
+4-element Vector{UInt16}:
+ 0x405d
+ 0x5d61
+ 0xfcae
+ 0xa36a
+```
+
 ## Pointer-friendly
 
 ### 🚧 Under construction 🚧
