@@ -9,6 +9,12 @@ test_ipv4 = (
 # Both test headers "show" the same since checksum is not shown
 expected_ipv4_string = "IPv4Header(sip=10.0.1.116, dip=10.0.1.1, length=0x0039, proto=IPPROTO_UDP)"
 
+ipv4_properties = IPv4Header(;
+    #version=4, #ihl
+    dscp=1, ecn=2, id=3, flags=4, offset=5, ttl=6, protocol=7, checksum=8,
+    sip=9, dip=10, options=(11,), length=12
+)
+
 @testset "ipv4" begin
     @testset "ipv4 header" begin
         for (data, hdr) in zip(test_data, test_ipv4)
@@ -30,4 +36,22 @@ expected_ipv4_string = "IPv4Header(sip=10.0.1.116, dip=10.0.1.1, length=0x0039, 
     @testset "ipv4 show" begin
         @test repr(test_ipv4[1]) == expected_ipv4_string
     end
+
+    @testset "ipv4 properties" begin
+        @test ipv4_properties.version == 4
+        @test ipv4_properties.ihl == 6
+        @test ipv4_properties.dscp == 1
+        @test ipv4_properties.ecn == 2
+        @test ipv4_properties.id == 3
+        @test ipv4_properties.flags == 4
+        @test ipv4_properties.offset == 5
+        @test ipv4_properties.ttl == 6
+        @test ipv4_properties.protocol == 7
+        @test ipv4_properties.checksum == 8
+        @test ipv4_properties.sip == ip"0.0.0.9"
+        @test ipv4_properties.dip == ip"0.0.0.10"
+        @test ipv4_properties.options === (0x0000_000b,)
+        @test ipv4_properties.length == 12
+    end
+
 end # testset "ipv4"

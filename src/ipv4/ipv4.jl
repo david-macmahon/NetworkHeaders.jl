@@ -43,7 +43,7 @@ function IPv4Header(;
 )
     # These two fields cannot be overridden
     version = 4
-    ihl = 5 + sizeof(options)÷sizeof(UInt32)
+    ihl = 5 + Base.length(options)
 
     # Build up words in host byte order
 
@@ -108,7 +108,7 @@ function Base.getproperty(x::IPv4Header{N}, f::Symbol) where N
     # Word 1 fields
     f === :version && return UInt8((x[1]>>28) & 0x0f)
     f === :ihl && return UInt8((x[1]>>24) & 0x0f)
-    f === :dscp && return UInt8((x[1]>>18) & 0c3f)
+    f === :dscp && return UInt8((x[1]>>18) & 0x3f)
     f === :ecn && return UInt8((x[1]>>16) & 0x03)
     f === :length && return UInt16(x[1] & 0xffff)
     # Word 2 fields
@@ -122,7 +122,8 @@ function Base.getproperty(x::IPv4Header{N}, f::Symbol) where N
     # Other fields
     f === :sip && return Sockets.IPv4(x[4])
     f === :dip && return Sockets.IPv4(x[5])
-    # TODO options!
+    # Options
+    f === :options && return ntoh.(x.data[6:end])
     # generic
     f === :bytes && return reinterpret(NTuple{4N, UInt8}, x)
     return getfield(x, f)

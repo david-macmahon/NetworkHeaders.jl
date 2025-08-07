@@ -17,4 +17,13 @@
             @test repr(hdr) == str
         end
     end
+
+    @testset "udp properties" begin
+        h = test_udp_hdrs[end]
+        @test propertynames(h) == (:sport, :dport, :length, :checksum, :bytes)
+        @test h.sport === 0x86a3
+        @test h.dport === 0x0035
+        @test h.length === 0x0025
+        @test h.checksum === 0x16ab
+    end
 end # @testset "udp"

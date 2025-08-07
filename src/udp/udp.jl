@@ -22,6 +22,10 @@ function UDPHeader(; sport=0, dport=0, length=8, checksum=0)
     UDPHeader(sport, dport, length, checksum)
 end
 
+function Base.propertynames(::UDPHeader, ::Bool=false)
+    (:sport, :dport, :length, :checksum, :bytes)
+end
+
 function Base.getproperty(x::UDPHeader, f::Symbol)
     # Integer fields are in network byte order
     # getproperty converts them to host byte order 

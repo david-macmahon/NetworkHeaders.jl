@@ -150,7 +150,7 @@ function Base.propertynames(x::ICMPHeader, ::Bool=false)
             (:gateway,)
         elseif type === Integer(ICMP_PARAMETERPROB)
             (:pointer,)
-        elseif type === Integer(ICMP_SOURCE_QUENCH)
+        elseif type === Integer(ICMP_TIME_EXCEEDED)
             ()
         elseif type === Integer(ICMP_SOURCE_QUENCH)
             ()
@@ -166,7 +166,7 @@ function Base.getproperty(x::ICMPHeader, f::Symbol)
     f === :id && return (ntoh(getfield(x, :data)) >> 16) % UInt16
     f === :sequence && return ntoh(getfield(x, :data)) % UInt16
     f === :gateway && return IPv4(ntoh(getfield(x, :data)))
-    f === :length && return (getfield(x, :data) >> 16) % UInt8
+    f === :length && return (ntoh(getfield(x, :data)) >> 16) % UInt8
     f === :mtu && return ntoh(getfield(x, :data)) % UInt16
     f === :pointer && return (ntoh(getfield(x, :data)) >> 24) % UInt8
     f === :data && return ntoh(getfield(x, :data))
