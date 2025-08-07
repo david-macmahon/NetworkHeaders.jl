@@ -6,12 +6,20 @@ version = "0.0.1"
 [deps]
 Sockets = "6462fe0b-24de-5631-8697-dd941f90decc"
 
-[extras]
-Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+[weakdeps]
+StructArrays = "09ab397b-f2b6-538f-b94a-2f83cf4a842a"
 
-[targets]
-test = ["Test"]
+#[extensions]
+#StructArraysNetworkHeadersExt = "StructArrays"
 
 [compat]
 Sockets = "1.11.0"
+StructArrays = "0.7.1"
 Test = "1.11.0"
+
+[extras]
+StructArrays = "09ab397b-f2b6-538f-b94a-2f83cf4a842a"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test", "StructArrays"]
