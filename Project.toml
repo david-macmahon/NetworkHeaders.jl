@@ -1,7 +1,7 @@
 name = "NetworkHeaders"
 uuid = "b88319e1-9984-40dc-91e8-bdda3b8e5b03"
 authors = ["David MacMahon <davidm@astro.berkeley.edu>"]
-version = "0.0.3"
+version = "0.0.4"
 
 [deps]
 Sockets = "6462fe0b-24de-5631-8697-dd941f90decc"
