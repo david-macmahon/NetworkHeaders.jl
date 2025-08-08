@@ -60,6 +60,21 @@ hexdump_expected = (
         end
     end
 
+    function nothrow(f, args...)
+        try
+            f(args...)
+            true
+        catch
+            false
+        end
+    end
+
+    @testset "zero" begin
+        for T in (EthernetHeader, IPv4Header, ICMPHeader, UDPHeader)
+            @test nothrow(Base.zero, T)
+        end
+    end
+
     include("ethernet_tests.jl")
     include("ipv4_tests.jl")
     include("icmp_tests.jl")
