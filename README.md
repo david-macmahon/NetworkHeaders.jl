@@ -20,11 +20,10 @@ primarily means:
 
 Structures are defined for the headers of individual network protocols.
 Julia does not support [packed][] data structures, so combining header
-structures into a higher level "packet" structure can result in extra padding
+structures into a higher level "packet" structure may result in extra padding
 between headers that causes the in-memory representation of the "packet"
-structure to be NOT wire compatible.  *Caveat emptor!*  Future versions of
-`NetworkHeaders.jl` will include higher level "compound headers" that will be
-wire compatible.
+structure to be NOT wire compatible.  Wire compatible compound header types are
+provided for headers that are adjacent in packets and alignment compatible.
 
 [Endianness]: https://en.wikipedia.org/wiki/Endianness
 [packed]: https://en.wikipedia.org/wiki/Data_structure_alignment#Data_structure_padding
@@ -35,6 +34,7 @@ wire compatible.
 
 - `AbstractNetworkHeader`: Base type for all `NetworkHeaders.jl` structures
 - `AbstractEthernerHeader`: Supertype of Ethernet header types
+- `AbstractCompoundHeader`: Supertype of compound header types
 
 `NetworkHeaders.jl` supports the following network header types:
 
@@ -43,10 +43,12 @@ wire compatible.
 - `IPv4Header`
 - `ICMPHeader`
 - `UDPHeader`
+- `IPv4ICMPHeader`
+- `IPv4UDPHeader`
 
 Here is a tree diagram of the type hierarchy:
 
-```plain
+```plaintext
 AbstractNetworkHeader
 ├─ AbstractEthernetHeader
 │  ├─ EthernetHeader
@@ -54,6 +56,10 @@ AbstractNetworkHeader
 ├─ ICMPHeader
 ├─ IPv4Header
 └─ UDPHeader
+
+AbstractCompoundHeader
+├─ IPv4ICMPHeader
+└─ IPv4UDPHeader
 ```
 
 ## Properties and constructors

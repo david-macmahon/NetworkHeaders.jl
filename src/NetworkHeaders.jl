@@ -3,8 +3,9 @@ module NetworkHeaders
 using Sockets
 
 # Header exports
-export AbstractNetworkHeader, AbstractEthernetHeader
-export EthernetHeader, EthernetVlanHeader, IPv4Header, ICMPHeader, UDPHeader
+export AbstractNetworkHeader, AbstractEthernetHeader, AbstractCompoundHeader
+export EthernetHeader, EthernetVlanHeader, IPv4Header, ICMPHeader, UDPHeader,
+       IPv4ICMPHeader, IPv4UDPHeader
 
 # Export renamed constants modules
 export EthernetConstants, IPv4Constants, ICMPConstants
@@ -42,6 +43,8 @@ const ICMPConstants = ICMP.Constants
 
 include("udp/udp.jl")
 using .UDP
+
+include("compound.jl")
 
 function Base.write(io::IO, h::AbstractNetworkHeader)
     write(io, h.bytes...)
