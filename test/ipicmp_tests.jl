@@ -24,9 +24,9 @@
 
     @testset "show" begin
         # Test whether {N} appears when N!=5 and does not appear when N==5
-        @test repr(IPv4ICMPHeader()) == "(IPv4Header(sip=0.0.0.0, dip=0.0.0.0, length=0x0014, proto=IPPROTO_UDP), ICMPHeader(ICMP_ECHO, 0xf7ff, id=0x0000, sequence=0x0000))"
-        @test repr(IPv4ICMPHeader{5}()) == "(IPv4Header(sip=0.0.0.0, dip=0.0.0.0, length=0x0014, proto=IPPROTO_UDP), ICMPHeader(ICMP_ECHO, 0xf7ff, id=0x0000, sequence=0x0000))"
-        @test repr(IPv4ICMPHeader{8}()) == "(IPv4Header{8}(sip=0.0.0.0, dip=0.0.0.0, length=0x0020, proto=IPPROTO_UDP), ICMPHeader(ICMP_ECHO, 0xf7ff, id=0x0000, sequence=0x0000))"
+        @test repr(IPv4ICMPHeader()) == "(IPv4Header(sip=0.0.0.0, dip=0.0.0.0, length=0x0014, proto=IPPROTO_UDP), ICMPHeader(ICMP_ECHO; id=0x0000, sequence=0x0000))"
+        @test repr(IPv4ICMPHeader{5}()) == "(IPv4Header(sip=0.0.0.0, dip=0.0.0.0, length=0x0014, proto=IPPROTO_UDP), ICMPHeader(ICMP_ECHO; id=0x0000, sequence=0x0000))"
+        @test repr(IPv4ICMPHeader{8}()) == "(IPv4Header{8}(sip=0.0.0.0, dip=0.0.0.0, length=0x0020, proto=IPPROTO_UDP), ICMPHeader(ICMP_ECHO; id=0x0000, sequence=0x0000))"
     end
 
     @testset "properties" begin

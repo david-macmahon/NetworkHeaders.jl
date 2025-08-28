@@ -54,19 +54,19 @@
 
     hdrs = last.(bytes_headers)
     repr_expected = (
-        "ICMPHeader(ICMP_ECHO, 0x8f53, id=0x1234, sequence=0x5678)",
-        "ICMPHeader(ICMP_ECHOREPLY, 0x9753, id=0x1234, sequence=0x5678)",
-        "ICMPHeader(ICMP_TIMESTAMP, 0x8a53, id=0x1234, sequence=0x5678)",
-        "ICMPHeader(ICMP_TIMESTAMPREPLY, 0x8953, id=0x1234, sequence=0x5678)",
-        "ICMPHeader(ICMP_INFO_REQUEST, 0x8853, id=0x1234, sequence=0x5678)",
-        "ICMPHeader(ICMP_INFO_REPLY, 0x8753, id=0x1234, sequence=0x5678)",
-        "ICMPHeader(ICMP_ADDRESS, 0x8653, id=0x1234, sequence=0x5678)",
-        "ICMPHeader(ICMP_ADDRESSREPLY, 0x8553, id=0x1234, sequence=0x5678)",
-        "ICMPHeader(ICMP_DEST_UNREACH, 0xa652, code=ICMP_HOST_UNREACH, length=0x34, mtu=0x5678)",
-        "ICMPHeader(ICMP_REDIRECT, 0xe4e6, code=ICMP_REDIR_HOST, gateway=10.11.12.13)",
-        "ICMPHeader(ICMP_PARAMETERPROB, 0xe1fe, code=ICMP_MISSING_OPTION, pointer=0x12)",
-        "ICMPHeader(ICMP_TIME_EXCEEDED, 0xf4fe, code=ICMP_EXC_FRAGTIME)",
-        "ICMPHeader(ICMP_SOURCE_QUENCH, 0xfbff)",
+        "ICMPHeader(ICMP_ECHO; id=0x1234, sequence=0x5678)",
+        "ICMPHeader(ICMP_ECHOREPLY; id=0x1234, sequence=0x5678)",
+        "ICMPHeader(ICMP_TIMESTAMP; id=0x1234, sequence=0x5678)",
+        "ICMPHeader(ICMP_TIMESTAMPREPLY; id=0x1234, sequence=0x5678)",
+        "ICMPHeader(ICMP_INFO_REQUEST; id=0x1234, sequence=0x5678)",
+        "ICMPHeader(ICMP_INFO_REPLY; id=0x1234, sequence=0x5678)",
+        "ICMPHeader(ICMP_ADDRESS; id=0x1234, sequence=0x5678)",
+        "ICMPHeader(ICMP_ADDRESSREPLY; id=0x1234, sequence=0x5678)",
+        "ICMPHeader(ICMP_DEST_UNREACH; code=ICMP_HOST_UNREACH, length=0x34, mtu=0x5678)",
+        "ICMPHeader(ICMP_REDIRECT; code=ICMP_REDIR_HOST, gateway=10.11.12.13)",
+        "ICMPHeader(ICMP_PARAMETERPROB; code=ICMP_MISSING_OPTION, pointer=0x12)",
+        "ICMPHeader(ICMP_TIME_EXCEEDED; code=ICMP_EXC_FRAGTIME)",
+        "ICMPHeader(ICMP_SOURCE_QUENCH)",
         "ICMPHeader(0xab, 0xcd, 0xeb85, 0x12345678)"
     )
 
@@ -88,13 +88,13 @@
         # NB: `icmp` is malformed because an incorrect checksum value explicitly
         # given.
         icmp = ICMPHeader(ICMP_TIME_EXCEEDED, ICMP_EXC_TTL, 0x0001, Int32(0))
-        icmpstr = "ICMPHeader(ICMP_TIME_EXCEEDED, 0x0001, code=ICMP_EXC_TTL)"
+        icmpstr = "ICMPHeader(ICMP_TIME_EXCEEDED, 0x0001; code=ICMP_EXC_TTL)"
         # NB: `icmp1` should be well formed, i.e. with correct checksum
         icmp1 = ICMPHeader(icmp)
-        icmpstr1 = "ICMPHeader(ICMP_TIME_EXCEEDED, 0xf4ff, code=ICMP_EXC_TTL)"
+        icmpstr1 = "ICMPHeader(ICMP_TIME_EXCEEDED; code=ICMP_EXC_TTL)"
         # NB: `icmp2` should be well formed, i.e. with correct checksum
         icmp2 = ICMPHeader(icmp; code=ICMP_EXC_FRAGTIME)
-        icmpstr2 = "ICMPHeader(ICMP_TIME_EXCEEDED, 0xf4fe, code=ICMP_EXC_FRAGTIME)"
+        icmpstr2 = "ICMPHeader(ICMP_TIME_EXCEEDED; code=ICMP_EXC_FRAGTIME)"
 
         @test repr(icmp) == icmpstr
         @test repr(icmp1) == icmpstr1

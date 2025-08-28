@@ -231,39 +231,48 @@ function Base.show(io::IO, x::ICMPHeader)
     if x.type in Integer.(instances(ICMPType))
         print(io, ICMPType(x.type))
     else
-        print(io, repr(x.type), ", ", repr(x.code))
+        print(io, repr(x.type), ", ",
+                  repr(x.code), ", ",
+                  repr(x.checksum), ", ",
+                  repr(x.data), ")"
+        )
+        return
     end
     # Checksum
-    print(io, ", ", repr(x.checksum))
+    internet_checksum(x) == 0 || print(io, ", ", repr(x.checksum))
     # Code
+    delim = ',' # delim for things after code
     if x.type === Integer(ICMP_DEST_UNREACH)
-        print(io, ", code=")
+        print(io, "; code=")
         if x.code in Integer.(instances(ICMPDestUnreachCode))
             print(io, ICMPDestUnreachCode(x.code))
         else
             print(io, repr(x.code))
         end
     elseif x.type === Integer(ICMP_REDIRECT)
-        print(io, ", code=")
+        print(io, "; code=")
         if x.code in Integer.(instances(ICMPRedirectCode))
             print(io, ICMPRedirectCode(x.code))
         else
             print(io, repr(x.code))
         end
     elseif x.type === Integer(ICMP_PARAMETERPROB)
-        print(io, ", code=")
+        print(io, "; code=")
         if x.code in Integer.(instances(ICMPParameterprobCode))
             print(io, ICMPParameterprobCode(x.code))
         else
             print(io, repr(x.code))
         end
     elseif x.type === Integer(ICMP_TIME_EXCEEDED)
-        print(io, ", code=")
+        print(io, "; code=")
         if x.code in Integer.(instances(ICMPTimeExceededCode))
             print(io, ICMPTimeExceededCode(x.code))
         else
             print(io, repr(x.code))
         end
+    else
+        # No code output, switch delim to ';'
+        delim = ';'
     end
 
     if x.type in Integer.((
@@ -276,23 +285,23 @@ function Base.show(io::IO, x::ICMPHeader)
         ICMP_ADDRESS,
         ICMP_ADDRESSREPLY
     ))
-        print(io, ", id=")
+        print(io, delim, " id=")
         print(io, repr(x.id))
         print(io, ", sequence=")
         print(io, repr(x.sequence))
     elseif x.type === Integer(ICMP_DEST_UNREACH)
-        print(io, ", length=")
+        print(io, delim, " length=")
         print(io, repr(x.length))
         print(io, ", mtu=")
         print(io, repr(x.mtu))
     elseif x.type === Integer(ICMP_REDIRECT)
-        print(io, ", gateway=")
+        print(io, delim, " gateway=")
         print(io, string(x.gateway))
     elseif x.type === Integer(ICMP_PARAMETERPROB)
-        print(io, ", pointer=")
+        print(io, delim, " pointer=")
         print(io, repr(x.pointer))
     elseif ! (x.type in Integer.(instances(ICMPType)))
-        print(io, ", ", repr(x.data))
+        print(io, delim, " ", repr(x.data))
     end
     print(io, ")")
 end
