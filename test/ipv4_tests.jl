@@ -1,4 +1,4 @@
-# Tests for ../src/ipv4.jl
+# Tests for ../src/ipv4/ipv4.jl
 
 # Should create headers matching `test_data`
 test_ipv4 = (
@@ -33,8 +33,25 @@ ipv4_properties = IPv4Header(;
         end
     end
 
+    @testset "ipv4 zeros" begin
+        @test zero(IPv4Header) === IPv4Header()
+        @test zero(IPv4Header) === IPv4Header{5}()
+        @test zero(IPv4Header{5}) === IPv4Header()
+        @test zero(IPv4Header{5}) === IPv4Header{5}()
+        @test zero(IPv4Header{8}) === IPv4Header{8}()
+        @test all(zeros(IPv4Header, 2) .=== [IPv4Header(), IPv4Header{5}()])
+        @test all(zeros(IPv4Header{5}, 2) .=== [IPv4Header{5}(), IPv4Header()])
+        @test all(zeros(IPv4Header{8}, 2) .=== [IPv4Header{8}(), IPv4Header{8}()])
+        @test zeros(IPv4Header, 2)|>eltype|>sizeof == 20
+        @test zeros(IPv4Header{8}, 2)|>eltype|>sizeof == 32
+    end
+
     @testset "ipv4 show" begin
         @test repr(test_ipv4[1]) == expected_ipv4_string
+        # Test whether {N} appears when N!=5 and does not appear when N==5
+        @test repr(IPv4Header()) == "IPv4Header(sip=0.0.0.0, dip=0.0.0.0, length=0x0014, proto=IPPROTO_UDP)"
+        @test repr(IPv4Header{5}()) == "IPv4Header(sip=0.0.0.0, dip=0.0.0.0, length=0x0014, proto=IPPROTO_UDP)"
+        @test repr(IPv4Header{8}()) == "IPv4Header{8}(sip=0.0.0.0, dip=0.0.0.0, length=0x0020, proto=IPPROTO_UDP)"
     end
 
     @testset "ipv4 properties" begin

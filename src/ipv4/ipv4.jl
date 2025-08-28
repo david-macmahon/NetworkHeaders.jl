@@ -87,6 +87,12 @@ function IPv4Header(;
     IPv4Header(hton.((word1, word2, word3, sip32, dip32, opt32...)))
 end
 
+IPv4Header{N}() where N = IPv4Header(; options=ntuple(_->UInt32(0), N-5))
+
+# zeros for parameterized types without type parameters uses default type
+# parameter value
+Base.zeros(::Type{IPv4Header}, dims::Base.DimOrInd...) = zeros(IPv4Header{5}, dims)
+
 function Base.getindex(ip::IPv4Header, i)
     ntoh.(ip.data[i])
 end
@@ -137,8 +143,10 @@ function Base.read(io::IO, ::Type{IPv4Header})
     reinterpret(IPv4Header{ihl}, r[])
 end
 
-function Base.show(io::IO, x::IPv4Header)
-    print(io, "IPv4Header(sip=", string(x.sip),
+function Base.show(io::IO, x::IPv4Header{N}) where N
+    print(io, "IPv4Header")
+    N != 5 && print(io, "{", N, "}")
+    print(io, "(sip=", string(x.sip),
         ", dip=", string(x.dip),
         ", length=", repr(x.length),
         ", proto="
