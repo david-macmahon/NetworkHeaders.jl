@@ -14,7 +14,8 @@ export EthernetConstants, IPv4Constants, ICMPConstants
 export internet_checksum
 
 # Ethernet exports
-export mac2string, string2mac, @mac_str
+export mac2string, mac2mac, @mac_str
+export string2mac # deprecated
 
 export read_headers
 

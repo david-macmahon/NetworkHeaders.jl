@@ -1,16 +1,26 @@
 """
     mac2string(m::NTuple{6, UInt8})::String
+    mac2string(m::AbstractString)::String
 
-Return a string representation of MAC `m`.
+Return the string representation of MAC address `m`.
+
+The method taking an `AbstractString` will canonicalize the MAC address string
+by first converting `m` to an `NTuple` and then back to a String.
 """
 mac2string(m::NTuple{6, UInt8})::String = join(bytes2hex.(m), ':')
+mac2string(m::AbstractString)::String = mac2string(mac2mac(m))
 
 """
-    string2mac(s::AbstractString)::NTuple{6, UInt8}
+    mac2mac(m::AbstractString)::NTuple{6, UInt8}
+    mac2mac(m::NTuple{6, UInt8})::NTuple{6, UInt8}
 
-Return an `NTuple{6, UInt8}` for the MAC address tring `s`.
+Return an `NTuple{6, UInt8}` for the MAC address given by 'm'.
 """
-string2mac(s::AbstractString)::NTuple{6, UInt8} = Tuple(hex2bytes(join(split(s, r"[-:.]"))))
+mac2mac(m::AbstractString)::NTuple{6, UInt8} = Tuple(hex2bytes(join(split(m, r"[-:.]"))))
+mac2mac(m::NTuple{6, UInt8})::NTuple{6, UInt8} = m
+
+# Deprecate string2mac
+@deprecate string2mac(m::AbstractString) mac2mac(m)
 
 """
     @mac_str(s) -> NTuple{6, UInt8}

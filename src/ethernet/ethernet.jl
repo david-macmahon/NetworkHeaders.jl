@@ -1,7 +1,7 @@
 module Ethernet
 
 export AbstractEthernetHeader, EthernetHeader, EthernetVlanHeader, Constants
-export mac2string, string2mac, @mac_str
+export mac2string, mac2mac, @mac_str
 
 using ..NetworkHeaders
 
@@ -17,7 +17,7 @@ struct EthernetHeader <: AbstractEthernetHeader
     ethtype::UInt16
 
     function EthernetHeader(dmac, smac, ethtype=0x0800)
-        new(dmac, smac, hton(Integer(ethtype) % UInt16))
+        new(mac2mac(dmac), mac2mac(smac), hton(Integer(ethtype) % UInt16))
     end
 end
 
@@ -50,8 +50,8 @@ struct EthernetVlanHeader <: AbstractEthernetHeader
 
     function EthernetVlanHeader(dmac, smac, vlan, ethtype=0x0800; tpid=0x8100)
         new(
-            dmac,
-            smac,
+            mac2mac(dmac),
+            mac2mac(smac),
             hton(tpid % UInt16),
             hton(vlan % UInt16),
             hton(Integer(ethtype) % UInt16)

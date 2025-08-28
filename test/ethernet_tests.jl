@@ -22,9 +22,12 @@
     @testset "MAC tests" begin
         for (data, expected) in test_mac_string
             @test mac2string(data) === expected
+            @test mac2string(expected) === expected
         end
         for (data, expected) in test_string_mac
-            @test string2mac(data) === expected
+            @test (@test_deprecated string2mac(data)) === expected
+            @test mac2mac(data) === expected
+            @test mac2mac(expected) == expected
         end
         for (got, expected) in test_mac_str
             @test got === expected
