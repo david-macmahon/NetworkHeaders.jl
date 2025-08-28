@@ -44,7 +44,8 @@ const ICMPConstants = ICMP.Constants
 include("udp/udp.jl")
 using .UDP
 
-include("compound.jl")
+include("compound/compound.jl")
+using .CompoundHeaders
 
 function Base.write(io::IO, h::AbstractNetworkHeader)
     write(io, h.bytes...)

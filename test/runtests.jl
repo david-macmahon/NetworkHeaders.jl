@@ -79,6 +79,8 @@ hexdump_expected = (
     include("ipv4_tests.jl")
     include("icmp_tests.jl")
     include("udp_tests.jl")
+    include("ipicmp_tests.jl")
+    include("ipudp_tests.jl")
     include("readwrite_tests.jl")
     include("structarrays_tests.jl")
 
