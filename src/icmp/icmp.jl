@@ -130,6 +130,58 @@ function ICMPHeader(type::Integer, checksum=nothing; data=0, code=0, initcsum=-1
     end
 end
 
+function ICMPHeader(icmp::ICMPHeader, checksum=nothing; kwargs...)
+    type8 = icmp.type
+
+    if type8 in Integer.((
+        ICMP_ECHO,
+        ICMP_ECHOREPLY,
+        ICMP_TIMESTAMP,
+        ICMP_TIMESTAMPREPLY,
+        ICMP_INFO_REQUEST,
+        ICMP_INFO_REPLY,
+        ICMP_ADDRESS,
+        ICMP_ADDRESSREPLY
+    ))
+        code8 = UInt8(icmp.code)
+        data32 = (
+            ((get(kwargs, :id, icmp.id) % UInt32) << 16) |
+            (get(kwargs, :sequence, icmp.sequence) % UInt16)
+        )
+    elseif type8 === Integer(ICMP_DEST_UNREACH)
+        code8 = Integer(get(kwargs, :code, icmp.code)) % UInt8
+        data32 = (
+            (((get(kwargs, :length, icmp.length) & 0xff) % UInt32) << 16) |
+            (get(kwargs, :mtu, icmp.mtu) % UInt16)
+        )
+    elseif type8 === Integer(ICMP_REDIRECT)
+        code8 = Integer(get(kwargs, :code, icmp.code)) % UInt8
+        data32 = UInt32(get(kwargs, :gateway, icmp.gateway))
+    elseif type8 === Integer(ICMP_PARAMETERPROB)
+        code8 = Integer(get(kwargs, :code, icmp.code)) % UInt8
+        data32 = (
+            ((get(kwargs, :pointer, icmp.pointer) & 0xff) % UInt32) << 24
+        )
+    elseif type8 === Integer(ICMP_TIME_EXCEEDED)
+        code8 = Integer(get(kwargs, :code, icmp.code)) % UInt8
+        data32 = UInt32(0)
+    else
+        code8 = UInt8(0)
+        data32 = UInt32(0)
+    end
+
+    if checksum === nothing
+        csum = (Int(type8) << 8) + (code8) + (data32 >> 16) + (data32 & 0xffff)
+        # Fold in the carries
+        csum = (csum & 0xffff) + (csum>>16)
+        csum16 = ~csum % UInt16
+    else
+        csum16 = checksum % UInt16
+    end
+
+    ICMPHeader(type8, code8, csum16, data32)
+end
+
 function Base.propertynames(x::ICMPHeader, ::Bool=false)
     type = getfield(x, :type)
     (:type, :code, :checksum, :bytes,

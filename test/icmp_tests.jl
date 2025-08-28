@@ -83,12 +83,24 @@
         end
     end
 
-    @testset "icmp inner ctor" begin
+    @testset "icmp ctors" begin
         # Test that inner constructor works with ICMPType etc constants.
+        # NB: `icmp` is malformed because an incorrect checksum value explicitly
+        # given.
         icmp = ICMPHeader(ICMP_TIME_EXCEEDED, ICMP_EXC_TTL, 0x0001, Int32(0))
         icmpstr = "ICMPHeader(ICMP_TIME_EXCEEDED, 0x0001, code=ICMP_EXC_TTL)"
+        # NB: `icmp1` should be well formed, i.e. with correct checksum
+        icmp1 = ICMPHeader(icmp)
+        icmpstr1 = "ICMPHeader(ICMP_TIME_EXCEEDED, 0xf4ff, code=ICMP_EXC_TTL)"
+        # NB: `icmp2` should be well formed, i.e. with correct checksum
+        icmp2 = ICMPHeader(icmp; code=ICMP_EXC_FRAGTIME)
+        icmpstr2 = "ICMPHeader(ICMP_TIME_EXCEEDED, 0xf4fe, code=ICMP_EXC_FRAGTIME)"
 
         @test repr(icmp) == icmpstr
+        @test repr(icmp1) == icmpstr1
+        @test repr(icmp2) == icmpstr2
+        @test internet_checksum(icmp1) === 0x0000
+        @test internet_checksum(icmp2) === 0x0000
     end
 
     @testset "icmp properties" begin
