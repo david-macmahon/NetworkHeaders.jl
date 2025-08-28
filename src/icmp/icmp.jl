@@ -38,22 +38,22 @@ contents of the `ICMPHeader` are determined from type-specific keyword arguments
 shown in the table below.  Unspecified keyword arguments default to 0, except
 for `initcsum` which defaults to `-1`.
 
-| `type`                | Keyword arguments           |
-|-----------------------|-----------------------------|
-| `ICMP_ECHO` (default) | initcsum, id, sequence      |
-| `ICMP_ECHOREPLY`      | initcsum, id, sequence      |
-| `ICMP_TIMESTAMP`      | initcsum, id, sequence      |
-| `ICMP_TIMESTAMPREPLY` | initcsum, id, sequence      |
-| `ICMP_INFO_REQUEST`   | initcsum, id, sequence      |
-| `ICMP_INFO_REPLY`     | initcsum, id, sequence      |
-| `ICMP_ADDRESS`        | initcsum, id, sequence      |
-| `ICMP_ADDRESSREPLY`   | initcsum, id, sequence      |
-| `ICMP_DEST_UNREACH`   | initcsum, code, length, mtu |
-| `ICMP_REDIRECT`       | initcsum, code, gateway     |
-| `ICMP_PARAMETERPROB`  | initcsum, code, pointer     |
-| `ICMP_TIME_EXCEEDED`  | initcsum, code              |
-| `ICMP_SOURCE_QUENCH`  | initcsum                    |
-| other Integer value   | initcsum, code, data        |
+| `ICMPType` or `Integer` | Keyword arguments |
+|:----------------------  |:------------------|
+| `ICMP_ECHO` (default)   | id, sequence      |
+| `ICMP_ECHOREPLY`        | id, sequence      |
+| `ICMP_TIMESTAMP`        | id, sequence      |
+| `ICMP_TIMESTAMPREPLY`   | id, sequence      |
+| `ICMP_INFO_REQUEST`     | id, sequence      |
+| `ICMP_INFO_REPLY`       | id, sequence      |
+| `ICMP_ADDRESS`          | id, sequence      |
+| `ICMP_ADDRESSREPLY`     | id, sequence      |
+| `ICMP_DEST_UNREACH`     | code, length, mtu |
+| `ICMP_REDIRECT`         | code, gateway     |
+| `ICMP_PARAMETERPROB`    | code, pointer     |
+| `ICMP_TIME_EXCEEDED`    | code              |
+| `ICMP_SOURCE_QUENCH`    |                   |
+| other `Integer` value   | code, data        |
 
 When `type` is an `Integer` whose value is equivalent to one of the `ICMPType`
 enum values, it will use the corresponding keyword arguments; otherwise it will
