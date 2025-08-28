@@ -3,8 +3,14 @@
 """
     hexdump([io,] bytes)
     hexdump([io,] hdr::AbstractNetworkHeader)
+    hexdump(String, bytes)
+    hexdump(String, hdr::AbstractNetworkHeader)
 
-Dump `bytes` or `hdr.bytes` to `io` (or `stdout`) in hexdump format.
+Dump `bytes` or `hdr.bytes` in hexdump format.
+
+By default the hex dump will be printed to `stdout`.  If `io` is given the hex
+dump will be printed to `io` instead.  If `String` is given, the hex dump will
+be returned as a `String`.
 """
 function hexdump(io, bytes::Union{AbstractVector{UInt8}, NTuple{N,UInt8}}) where N
     foreach(enumerate(Iterators.partition(bytes, 16))) do (rownum, row)
@@ -33,3 +39,10 @@ end
 hexdump(bytes::Union{AbstractVector{UInt8}, NTuple{N,UInt8}}) where N = hexdump(stdout, bytes)
 hexdump(io, hdr::AbstractNetworkHeader) = hexdump(io, hdr.bytes)
 hexdump(hdr::AbstractNetworkHeader) = hexdump(stdout, hdr)
+
+function hexdump(::Type{String}, bytes::Union{AbstractVector{UInt8}, NTuple{N,UInt8}}) where N
+    io = IOBuffer()
+    hexdump(io, bytes)
+    #read(seekstart(io), String)
+    String(take!(io))
+end
