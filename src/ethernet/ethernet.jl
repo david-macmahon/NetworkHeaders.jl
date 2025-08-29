@@ -1,4 +1,4 @@
-module Ethernet
+module EthernetHeaders
 
 export AbstractEthernetHeader, EthernetHeader, EthernetVlanHeader, Constants
 export mac2string, mac2mac, @mac_str
@@ -126,4 +126,4 @@ function Base.show(io::IO, x::AbstractEthernetHeader)
     print(io, ")")
 end
 
-end # module Ethernet
+end # module EthernetHeaders

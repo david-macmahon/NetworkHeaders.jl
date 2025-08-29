@@ -1,4 +1,4 @@
-module UDP
+module UDPHeaders
 
 export UDPHeader
 
@@ -41,4 +41,4 @@ function Base.show(io::IO, x::UDPHeader)
     )
 end
 
-end # module UDP
+end # module UDPHeaders

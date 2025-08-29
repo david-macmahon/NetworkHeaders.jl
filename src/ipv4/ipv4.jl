@@ -1,4 +1,4 @@
-module IPv4
+module IPv4Headers
 
 export IPv4Header, Constants
 
@@ -159,4 +159,4 @@ function Base.show(io::IO, x::IPv4Header{N}) where N
     print(io, ")")
 end
 
-end # module IPv4
+end # module IPv4Headers

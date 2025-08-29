@@ -1,4 +1,4 @@
-module ICMP
+module ICMPHeaders
 
 export ICMPHeader, Constants
 
@@ -306,4 +306,4 @@ function Base.show(io::IO, x::ICMPHeader)
     print(io, ")")
 end
 
-end # module ICMP
+end # module ICMPHeaders

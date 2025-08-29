@@ -2,6 +2,9 @@ module NetworkHeaders
 
 using Sockets
 
+# Export some Sockets names
+export @ip_str, IPv4
+
 # Header exports
 export AbstractNetworkHeader, AbstractEthernetHeader, AbstractCompoundHeader
 export EthernetHeader, EthernetVlanHeader, IPv4Header, ICMPHeader, UDPHeader,
@@ -31,19 +34,19 @@ include("hexdump.jl")
 
 # Header specific definitions
 include("ethernet/ethernet.jl")
-using .Ethernet
-const EthernetConstants = Ethernet.Constants
+using .EthernetHeaders
+const EthernetConstants = EthernetHeaders.Constants
 
 include("ipv4/ipv4.jl")
-using .IPv4
-const IPv4Constants = IPv4.Constants
+using .IPv4Headers
+const IPv4Constants = IPv4Headers.Constants
 
 include("icmp/icmp.jl")
-using .ICMP
-const ICMPConstants = ICMP.Constants
+using .ICMPHeaders
+const ICMPConstants = ICMPHeaders.Constants
 
 include("udp/udp.jl")
-using .UDP
+using .UDPHeaders
 
 include("compound/compound.jl")
 using .CompoundHeaders
@@ -60,14 +63,14 @@ end
 
 function read_headers(io::IO)
     ethernet = read(io, AbstractEthernetHeader)
-    if ethernet.ethtype != Integer(Ethernet.Constants.ETH_P_IP)
+    if ethernet.ethtype != Integer(EthernetConstants.ETH_P_IP)
         return (; ethernet,)
     end
     ipv4 = read(io, IPv4Header)
-    if ipv4.protocol == Integer(IPv4.Constants.IPPROTO_ICMP)
+    if ipv4.protocol == Integer(IPv4Constants.IPPROTO_ICMP)
         icmp = read(io, ICMPHeader)
         return (; ethernet, ipv4, icmp)
-    elseif ipv4.protocol == Integer(IPv4.Constants.IPPROTO_UDP)
+    elseif ipv4.protocol == Integer(IPv4Constants.IPPROTO_UDP)
         udp = read(io, UDPHeader)
         return (; ethernet, ipv4, udp)
     end
