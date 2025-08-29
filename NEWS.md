@@ -1,5 +1,9 @@
 # NEWS
 
+## Changes in v0.2.1
+
+* Export `@ip_str` and `IPv4` from `Sockets`
+
 ## Changes in v0.2.0
 
 * Cleanup output of show(::ICMPHeader)
